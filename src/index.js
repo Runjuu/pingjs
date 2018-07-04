@@ -15,7 +15,7 @@ const requestImage = (url, timeout) => (new Promise(function(resolve, reject) {
   img.src = `${url}?random-no-cache=${Math.floor((1 + Math.random()) * 0x10000).toString(16)}`;
 
   clearTimeout(requestImage.timeout);
-  if (timeout) requestImage.timeout = setTimeout(reject, timeout);
+  if (timeout) requestImage.timeout = setTimeout(() => reject(`Timeout after ${timeout} ms`), timeout);
 }));
 
 /**
@@ -31,6 +31,7 @@ async function ping(url, timeout) {
     await requestImage(url, timeout);
   } catch (err) {
     console.log(err);
+  	throw err;
   }
 
   return (new Date()).getTime() - start;
